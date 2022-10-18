@@ -1,74 +1,85 @@
-//Global Variables
-//Reference moment.js
-var today = moment();
-//Referance the whole task 
-var timeBlockEl = document.querySelector('container');
+//current time is displayed at the top of the scheduler
+var currentTime = moment().format("MMMM Do YYYY, h:mm:ss a");
+$("#currentDay").text(currentTime);
 
-//References 
-//Display the current date and time on the paragraph with an id of "currentDay"
-$('#currentDay').text(today.format('LLLL')); //LLLL represents the day of week, date and time
+//timeblocks presented for each hour in the business dya
+var timeBlock = $(".hour");
+var now = parseInt(moment().format("H"));
 
-//Event Listeners
-//Event Listener for the Save Button 
-$('.saveBtn').on('click', function (){
-    //get values of description from jquery
-    var textValue = $(this).siblings('.description').val();
-    //get the id attribute of the parent div element
-    var timeKey = $(this).parent().attr('id');
+//each timeblock is color coded to show past/present/future
+$.each(timeBlock, function (i, hour) {
+    var hourID = parseInt($(this).attr("id"));
+    if (hourID === now) {
+        $(this).next().addClass("present");
+    }else if (hourID < now) {
+        $(this).next().addClass("past");
 
-//save in local storage
-    localStorage.setItem(timeKey, textValue);
+    }else if (hourID > now) {
+        $(this).next().addClass("future");
+    }
 });
 
+//able to click on the time row and save event text to local storage and remain after refresh
+$('.saveBtn').on("click", function (event){
+    var calenderItem = event.target.parentElement.previousElementSibling.children[0].value;
+    localStorage.setItem(event.target.attributes[0].value, calenderItem);
 
-//Get item (if any) from local storage
-$('#hour8 .description').val(localStorage.getItem('hour8'));
-$('#hour9 .description').val(localStorage.getItem('hour9'));
-$('#hour10 .description').val(localStorage.getItem('hour10'));
-$('#hour11 .description').val(localStorage.getItem('hour11'));
-$('#hour12 .description').val(localStorage.getItem('hour12'));
-$('#hour13 .description').val(localStorage.getItem('hour13'));
-$('#hour14 .description').val(localStorage.getItem('hour14'));
-$('#hour15 .description').val(localStorage.getItem('hour15'));
-$('#hour16 .description').val(localStorage.getItem('hour16'));
-$('#hour17 .description').val(localStorage.getItem('hour17'));
+});
 
-//Function that will track wether a task is in the past, present or future and color code it accordingly
-function auditTask() {
-    //get current number of hours
-    var currentHour = today.hours();
-
-    //loop over each time block
-    $('.time-block').each(function () {
-        var timeId =parseInt($(this).attr('id').split("hour")[1]);
-       //if the time Id attribute is earlier than the current hour, add the past class
-        if (timeId < currentHour) {
-            $(this).addClass('past');
-        }
-        //if the time Id attribute is equal to the current hour, remove the past and future class and add the present class
-        else if (timeId === currentHour){
-            $(this).removeClass('past');
-            $(this).removeClass('future');
-            $(this).removeClass('present');
-        }
-        //If the time Id attribute is after the current hour, remove the past and present class and add the future class
-        else{
-            $(this).removeClass('past');
-            $(this).removeClass('present');
-            $(this).removeClass('future');
-
-        }
-
-        
-    });
-    //Call the audit task function
-    auditTask();
-
-
-    //Use setTimeout to update the time every minute (1000ms * 60s)
-    setTimeout(function (){
-        //clear the current URl
-        location = '';//location references the current URL
-    }, 1000 * 60);
-
-}
+//after refresh still saved
+$(document).ready(function (){
+    if(localStorage["9"] !==null && localStorage["9"] !== undefined) {
+        var nineAm = $("<p>" + localStorage["9"] + "</p>");
+        $("nineAm").append(nineAm[0].innerText);
+    }else {
+        ("");
+    }
+    if(localStorage["10"] !==null && localStorage["10"] !== undefined) {
+        var tenAm = $("<p>" + localStorage["10"] + "</p>");
+        $("tenAm").append(tenAm[0].innerText);
+    }else {
+        ("");
+    }
+    if(localStorage["11"] !==null && localStorage["11"] !== undefined) {
+        var elevenAm = $("<p>" + localStorage["11"] + "</p>");
+        $("elevenAm").append(elevenAm[0].innerText);
+    }else {
+        ("");
+    }
+    if(localStorage["12"] !==null && localStorage["12"] !== undefined) {
+        var twelvePm = $("<p>" + localStorage["12"] + "</p>");
+        $("twelvePm").append(twelvePm[0].innerText);
+    }else {
+        ("");
+    }
+    if(localStorage["1"] !==null && localStorage["1"] !== undefined) {
+        var onePm = $("<p>" + localStorage["1"] + "</p>");
+        $("onePm").append(onePm[0].innerText);
+    }else {
+        ("");
+    }
+    if(localStorage["2"] !==null && localStorage["2"] !== undefined) {
+        var twoPm = $("<p>" + localStorage["2"] + "</p>");
+        $("twoPm").append(twoPm[0].innerText);
+    }else {
+        ("");
+    }
+    if(localStorage["3"] !==null && localStorage["3"] !== undefined) {
+        var threePm = $("<p>" + localStorage["3"] + "</p>");
+        $("threePm").append(threePm[0].innerText);
+    }else {
+        ("");
+    }
+    if(localStorage["4"] !==null && localStorage["4"] !== undefined) {
+        var fourPm = $("<p>" + localStorage["4"] + "</p>");
+        $("fourPm").append(fourPm[0].innerText);
+    }else {
+        ("");
+    }
+    if(localStorage["5"] !==null && localStorage["5"] !== undefined) {
+        var fivePm = $("<p>" + localStorage["5"] + "</p>");
+        $("fivePm").append(fivePm[0].innerText);
+    }else {
+        ("");
+    }
+});
